@@ -20,7 +20,8 @@ RUN apk update && apk upgrade && apk add \
     musl-dev \
     gcompat \
     bash=${BASH_CLI_VERSION} \
-    curl=${CURL_CLI_VERSION} 
+    curl=${CURL_CLI_VERSION} \
+    openssh
 
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_CLI_VERSION}/terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && \
     unzip terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && rm terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && \
