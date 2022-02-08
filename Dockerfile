@@ -32,8 +32,9 @@ RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_CLI_VERSION}/terra
 
 # aws cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" -o "/tmp/awscliv2.zip" && \
-    unzip /tmp/awscliv2.zip -d /tmp && \
-    /tmp/aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli
+    unzip /tmp/awscliv2.zip -d /tmp && rm /tmp/awscliv2.zip && \
+    /tmp/aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli && \
+    rm -R /tmp/aws
 
 # kubectl cli
 RUN curl "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_CLI_VERSION}/bin/linux/amd64/kubectl" -o "/tmp/kubectl" && \
@@ -43,7 +44,9 @@ RUN curl "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_CL
 # helm cli
 RUN wget "https://get.helm.sh/helm-v${HELM_CLI_VERSION}-linux-amd64.tar.gz" -P "/tmp" && \
     tar -zxvf /tmp/helm-v${HELM_CLI_VERSION}-linux-amd64.tar.gz && \
-    mv ./linux-amd64/helm /usr/local/bin/helm
+    rm /tmp/helm-v${HELM_CLI_VERSION}-linux-amd64.tar.gz && \
+    mv ./linux-amd64/helm /usr/local/bin/helm && \
+    rm -R ./linux-amd64
 
 # jq cli
 RUN wget "https://github.com/stedolan/jq/releases/download/jq-${JQ_CLI_VERSION}/jq-linux64" -P "/tmp/" && \
