@@ -13,12 +13,13 @@ ENV TERRAFORM_CLI_VERSION=1.1.3
 ENV AWS_CLI_VERSION=2.1.39
 ENV CURL_CLI_VERSION=7.80.0-r0
 ENV KUBECTL_CLI_VERSION=v1.23.3
+ENV JQ_CLI_VERSION=1.6
 
 RUN apk update && apk upgrade && apk add \
     musl-dev \
     gcompat \
     bash=${BASH_CLI_VERSION} \
-    curl=${CURL_CLI_VERSION}
+    curl=${CURL_CLI_VERSION} 
 
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_CLI_VERSION}/terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && \
     unzip terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && rm terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && \
@@ -31,6 +32,10 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION
 RUN curl "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_CLI_VERSION}/bin/linux/amd64/kubectl" -o "/tmp/kubectl" && \
     chmod +x /tmp/kubectl && \
     mv /tmp/kubectl /usr/local/bin/kubectl
+
+RUN wget "https://github.com/stedolan/jq/releases/download/jq-${JQ_CLI_VERSION}/jq-linux64" -P "/tmp/" && \
+    chmod +x /tmp/jq-linux64 && \
+    mv /tmp/jq-linux64 /usr/local/bin/jq
 
 WORKDIR ${APP_HOME}
 
