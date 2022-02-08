@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  swiss-knife:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: swiss-knife-image
+    container_name: swiss-knife
+    volumes: 
+      - .:/app

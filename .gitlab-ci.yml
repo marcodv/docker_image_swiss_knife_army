@@ -1,13 +1,69 @@
-# You can override the included template(s) by including variable overrides
-# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
-# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
-# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
+- lint
 - test
-sast:
+- push
+
+flake8:
+  stage: lint
+  image: python:3.9-alpine
+  before_script:
+    - pip install -q flake8
+  script:
+    - flake8
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "production"'
+
+format:
+  stage: lint
+  image: python:3.9-alpine
+  before_script:
+    - pip install black
+  script:
+    - echo "Linting with black"
+    - black --check ./**/*.py
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "production"'
+
+.docker-stage:
+  image: docker:latest
+  tags:
+    - docker
+  services:
+    - docker:dind
+  variables:
+    IMAGE_NAME_BASE: $CI_REGISTRY_IMAGE/swiss-knife
+    IMAGE_NAME: $IMAGE_NAME_BASE:$CI_COMMIT_SHORT_SHA
+    DOCKER_TLS_CERTDIR: "/certs"
+
+test:
   stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml
+  extends: .docker-stage
+  before_script:
+    - apk add --no-cache docker-compose
+    - docker-compose -f compose.local.yml config
+  script:
+    - docker-compose -f compose.local.yml run pytest
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "production"'
+
+push:
+  stage: push
+  extends: .docker-stage
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build  -f Dockerfile -t $IMAGE_NAME .
+    - docker tag $IMAGE_NAME $IMAGE_NAME_BASE:$CI_COMMIT_BRANCH
+    - docker push $IMAGE_NAME
+    - docker push $IMAGE_NAME_BASE:$CI_COMMIT_BRANCH
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "production"'
+
+

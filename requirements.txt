@@ -1,0 +1,5 @@
+pytest==7.0.0 # https://docs.pytest.org/en/7.0.x/
+black==21.11b1  # https://github.com/psf/black
+flake8==4.0.1  # https://github.com/PyCQA/flake8
+flake8-isort==4.1.1  # https://github.com/gforcada/flake8-isort
+
