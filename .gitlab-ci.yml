@@ -46,7 +46,7 @@ test:
     - apk add --no-cache docker-compose
     - docker-compose -f compose.local.yml config
   script:
-    - docker-compose -f compose.local.yml run swiss-knife pytest
+    - docker-compose -f compose.local.yml run swiss-knife pytest -vss
   rules:
     - if: $CI_MERGE_REQUEST_IID
     - if: '$CI_COMMIT_BRANCH == "main"'
