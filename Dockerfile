@@ -13,6 +13,7 @@ ENV TERRAFORM_CLI_VERSION=1.1.3
 ENV AWS_CLI_VERSION=2.1.39
 ENV CURL_CLI_VERSION=7.80.0-r0
 ENV KUBECTL_CLI_VERSION=v1.23.3
+ENV HELM_CLI_VERSION=3.8.0
 ENV JQ_CLI_VERSION=1.6
 
 RUN apk update && apk upgrade && apk add \
@@ -32,6 +33,10 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION
 RUN curl "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_CLI_VERSION}/bin/linux/amd64/kubectl" -o "/tmp/kubectl" && \
     chmod +x /tmp/kubectl && \
     mv /tmp/kubectl /usr/local/bin/kubectl
+
+RUN wget "https://get.helm.sh/helm-v${HELM_CLI_VERSION}-linux-amd64.tar.gz" -P "/tmp" && \
+    tar -zxvf /tmp/helm-v${HELM_CLI_VERSION}-linux-amd64.tar.gz && \
+    mv ./linux-amd64/helm /usr/local/bin/helm
 
 RUN wget "https://github.com/stedolan/jq/releases/download/jq-${JQ_CLI_VERSION}/jq-linux64" -P "/tmp/" && \
     chmod +x /tmp/jq-linux64 && \
