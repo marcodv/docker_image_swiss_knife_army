@@ -53,6 +53,8 @@ RUN wget "https://github.com/stedolan/jq/releases/download/jq-${JQ_CLI_VERSION}/
     chmod +x /tmp/jq-linux64 && \
     mv /tmp/jq-linux64 /usr/local/bin/jq
 
+FROM python as development 
+
 WORKDIR ${APP_HOME}
 
 COPY requirements.txt requirements.txt
