@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+      target: development
+    tty: true
     image: swiss-knife-image
     container_name: swiss-knife
     volumes: 
