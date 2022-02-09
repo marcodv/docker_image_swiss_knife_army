@@ -3,8 +3,6 @@ ARG PYTHON_BASE=alpine
 
 FROM python:${PYTHON_VERSION}-${PYTHON_BASE} as python
 
-ARG APP_HOME=/app
-
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
@@ -63,7 +61,7 @@ RUN wget "https://github.com/stedolan/jq/releases/download/jq-${JQ_CLI_VERSION}/
 
 FROM python as development 
 
-WORKDIR ${APP_HOME}
+WORKDIR /app
 
 COPY requirements.txt requirements.txt
 RUN pip install -r ./requirements.txt
