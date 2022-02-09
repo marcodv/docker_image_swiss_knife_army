@@ -60,11 +60,13 @@ push:
   extends: .docker-stage
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # replace char "/" to "_"
+    - TAG=${$CI_COMMIT_BRANCH////$'_'}
   script:
     - docker build  -f Dockerfile -t $IMAGE_NAME .
-    - docker tag $IMAGE_NAME $IMAGE_NAME_BASE:$CI_COMMIT_BRANCH
+    - docker tag $IMAGE_NAME $IMAGE_NAME_BASE:$TAG
     - docker push $IMAGE_NAME
-    - docker push $IMAGE_NAME_BASE:$CI_COMMIT_BRANCH
+    - docker push $IMAGE_NAME_BASE:$TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "production"'
