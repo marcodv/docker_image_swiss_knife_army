@@ -14,6 +14,7 @@ flake8:
     - if: $CI_MERGE_REQUEST_IID
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "production"'
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
 
 format:
   stage: lint
@@ -27,6 +28,7 @@ format:
     - if: $CI_MERGE_REQUEST_IID
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "production"'
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
 
 .docker-stage:
   image: docker:latest
@@ -51,19 +53,22 @@ test:
     - if: $CI_MERGE_REQUEST_IID
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "production"'
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
 
 push:
   stage: push
   extends: .docker-stage
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # replace char "/" to "_"
+    - DOCKER_TAG=$(echo $CI_COMMIT_BRANCH | tr "/" "_") 
   script:
     - docker build --target python -f Dockerfile -t $IMAGE_NAME .
-    - docker tag $IMAGE_NAME $IMAGE_NAME_BASE:$CI_COMMIT_BRANCH
+    - docker tag $IMAGE_NAME $IMAGE_NAME_BASE:$DOCKER_TAG
     - docker push $IMAGE_NAME
-    - docker push $IMAGE_NAME_BASE:$CI_COMMIT_BRANCH
+    - docker push $IMAGE_NAME_BASE:$DOCKER_TAG
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "production"'
-
+    - if: '$CI_COMMIT_BRANCH =~ /^release/'
 
