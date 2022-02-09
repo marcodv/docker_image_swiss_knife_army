@@ -10,6 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 ENV BASH_CLI_VERSION=5.1.8-r0
 ENV TERRAFORM_CLI_VERSION=1.1.3
+ENV TERRAFORM_DOCS_CLI_VERSION=0.16.0
 ENV AWS_CLI_VERSION=2.1.39
 ENV CURL_CLI_VERSION=7.80.0-r0
 ENV KUBECTL_CLI_VERSION=v1.23.3
@@ -29,6 +30,13 @@ RUN apk update && apk upgrade && apk add \
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_CLI_VERSION}/terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && \
     unzip terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && rm terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && \
     mv terraform /usr/bin/terraform
+
+# terraform docs cli
+RUN curl -Lo /tmp/terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v${TERRAFORM_DOCS_CLI_VERSION}/terraform-docs-v${TERRAFORM_DOCS_CLI_VERSION}-linux-amd64.tar.gz && \
+    tar -xzf /tmp/terraform-docs.tar.gz && \
+    rm /tmp/terraform-docs.tar.gz && \
+    chmod +x terraform-docs && \
+    mv terraform-docs /usr/local/bin/terraform-docs
 
 # aws cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" -o "/tmp/awscliv2.zip" && \

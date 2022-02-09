@@ -15,6 +15,7 @@ def test_python():
         ("CURL_CLI_VERSION", "curl --version"),
         ("AWS_CLI_VERSION", "aws --version"),
         ("TERRAFORM_CLI_VERSION", "terraform -version"),
+        ("TERRAFORM_DOCS_CLI_VERSION", "terraform-docs -v"),
         ("KUBECTL_CLI_VERSION", "kubectl version --client"),
         ("HELM_CLI_VERSION", "helm version"),
         ("JQ_CLI_VERSION", "jq --version"),
