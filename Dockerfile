@@ -14,13 +14,15 @@ ENV CURL_CLI_VERSION=7.80.0-r0
 ENV KUBECTL_CLI_VERSION=v1.23.3
 ENV HELM_CLI_VERSION=3.8.0
 ENV JQ_CLI_VERSION=1.6
+ENV OPENSSL_CLI_VERSION=1.1.1l-r8
 
 RUN apk update && apk upgrade && apk add \
     # package needed for awscliv2
-    musl-dev  \ 
+    musl-dev \ 
     # package needed for awscliv2
     gcompat \
     openssh \
+    openssl=${OPENSSL_CLI_VERSION} \
     bash=${BASH_CLI_VERSION} \
     curl=${CURL_CLI_VERSION}
 
