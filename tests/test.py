@@ -19,6 +19,7 @@ def test_python():
         ("KUBECTL_CLI_VERSION", "kubectl version --client"),
         ("HELM_CLI_VERSION", "helm version"),
         ("JQ_CLI_VERSION", "jq --version"),
+        ("OPENSSL_CLI_VERSION", "openssl version"),
     ],
 )
 def test_cli_version(env_variable, command):
