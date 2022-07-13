@@ -17,3 +17,7 @@ jobs:
           command: |
             apk add --no-cache docker-compose
             docker-compose -f compose.local.yml config
+
+workflows:
+  jobs:
+    - build_and_test
