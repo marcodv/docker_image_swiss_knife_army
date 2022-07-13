@@ -9,5 +9,8 @@ jobs:
       - checkout
       - run: 
           name: Install dependencies 
-          command: pip install black
+          command: | 
+            pip install black
+            black --check ./**/*.py
+
 
