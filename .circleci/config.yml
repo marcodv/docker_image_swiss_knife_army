@@ -12,5 +12,8 @@ jobs:
           command: | 
             pip install black
             black --check ./**/*.py
-
-
+      - test:
+          name: Run docker-compose
+          command: |
+            apk add --no-cache docker-compose
+            docker-compose -f compose.local.yml config
