@@ -4,6 +4,7 @@ version: 2.1
 jobs:
   build:
     docker:
-     - image: cimg/base:2022.05
+      - image: cimg/python:3.9.11
     steps:
-        - run: echo "Say hello to YAML!"
+      - checkout
+      - run: python --version 
