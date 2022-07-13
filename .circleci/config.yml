@@ -15,9 +15,13 @@ jobs:
             pip install black
             black --check ./**/*.py
       - run: 
+          name: Docker-compose build
+          command: |
+            docker-compose -f compose.local.yml run swiss-knife pytest -vss
+      - run: 
           name: Docker build
           command: |
-            docker build --target python -f Dockerfile -t swiss-army-knife:0.1 .
+            docker build -f Dockerfile -t swiss-army-knife:0.1 .
 
 workflows:
   on_commit:
