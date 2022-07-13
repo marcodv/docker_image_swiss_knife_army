@@ -19,5 +19,6 @@ jobs:
             docker-compose -f compose.local.yml config
 
 workflows:
-  jobs:
-    - build_and_test
+  on_commit:
+    jobs:
+      - build_and_test
