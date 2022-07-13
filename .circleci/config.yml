@@ -20,7 +20,7 @@ jobs:
       - run: 
           name: Docker build
           command: |
-            docker build --target python -f Dockerfile -t swiss-army-knife
+            docker build --target python -f Dockerfile -t swiss-army-knife:0.1
 
 workflows:
   on_commit:
