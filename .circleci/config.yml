@@ -24,6 +24,7 @@ jobs:
           name: Docker build
           command: |
             docker build -f Dockerfile -t swiss-army-knife:0.1 .
+            docker scan 
 
 workflows:
   on_commit:
