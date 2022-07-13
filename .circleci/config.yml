@@ -12,7 +12,12 @@ jobs:
           command: | 
             pip install black
             black --check ./**/*.py
-      - test:
+  test:
+    docker:
+      - image: python:3.9-alpine
+    steps:
+      - checkout
+      - run: 
           name: Run docker-compose
           command: |
             apk add --no-cache docker-compose
