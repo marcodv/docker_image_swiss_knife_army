@@ -10,6 +10,7 @@ jobs:
       - run: 
           name: Install dependencies 
           command: | 
+            pyenv global 2022.5.2
             echo 'swiss-knife' > .python-version  
             pip install black
             black --check ./**/*.py
