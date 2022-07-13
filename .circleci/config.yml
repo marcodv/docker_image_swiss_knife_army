@@ -11,7 +11,7 @@ jobs:
           name: Install dependencies 
           command: | 
             pyenv versions
-            echo '2.3.0' > .python-version  
+            echo '3.9.13' > .python-version  
             pip install black
             black --check ./**/*.py
       - run: 
