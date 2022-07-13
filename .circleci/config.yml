@@ -10,8 +10,7 @@ jobs:
       - run: 
           name: Install dependencies 
           command: | 
-            ls -al
-            pwd
+            echo 'swiss-knife' > .python-version  
             pip install black
             black --check ./**/*.py
       - run: 
