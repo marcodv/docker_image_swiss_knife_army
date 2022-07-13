@@ -15,11 +15,6 @@ jobs:
             pip install black
             black --check ./**/*.py
       - run: 
-          name: Run docker-compose
-          command: |
-            apk add --no-cache docker docker-compose
-            docker-compose -f compose.local.yml config
-      - run: 
           name: Docker build
           command: |
             docker build --target python -f Dockerfile -t swiss-army-knife:0.1 .
