@@ -21,10 +21,7 @@ RUN apk update && apk upgrade && apk add \
     musl-dev \ 
     # package needed for awscliv2
     gcompat \
-    openssh \
-    openssl \
-    bash \
-    curl
+    openssh 
 
 # terraform cli
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_CLI_VERSION}/terraform_${TERRAFORM_CLI_VERSION}_linux_amd64.zip && \
